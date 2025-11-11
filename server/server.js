@@ -146,7 +146,7 @@ if (isProduction) {
   const clientPath = path.join(__dirname, "../client/dist");
   app.use(express.static(clientPath));
 
-  app.get("*", (req, res, next) => {
+  app.get("/*", (req, res, next) => {
     if (req.url.startsWith("/api") || req.url.startsWith("/auth")) return next();
     res.sendFile(path.join(clientPath, "index.html"));
   });
@@ -160,4 +160,5 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on port ${PORT} (${isProduction ? "Production" : "Dev"})`);
   console.log(`🌍 CORS Origin: ${ORIGIN}`);
 });
+
 
