@@ -1,6 +1,25 @@
 const { Storage } = require("@google-cloud/storage");
 
-// Build credentials object from .env
+// --- Safety checks for required env vars ---
+const required = [
+  "GCP_PROJECT_ID",
+  "GCP_PRIVATE_KEY",
+  "GCP_CLIENT_EMAIL",
+  "STORE_PRODUCTS",
+  "STORE_LOGOS",
+  "STORE_BANNERS",
+  "STORE_DOCUMENTS",
+  "STORE_POA",
+  "PROOF_OF_RESIDENCE",
+];
+for (const key of required) {
+  if (!process.env[key]) {
+    console.error(`❌ Missing required environment variable: ${key}`);
+    process.exit(1); // fail fast
+  }
+}
+
+// --- Build credentials object ---
 const credentials = {
   type: "service_account",
   project_id: process.env.GCP_PROJECT_ID,
@@ -14,16 +33,17 @@ const credentials = {
   client_x509_cert_url: process.env.GCP_CLIENT_CERT_URL,
 };
 
+// --- Initialize storage ---
 const storage = new Storage({
   credentials,
   projectId: process.env.GCP_PROJECT_ID,
 });
 
-// Buckets
+// --- Buckets ---
 const buckets = {
-  profile: storage.bucket(process.env.PROFILE_PICTURES),
-  image: storage.bucket(process.env.IMAGES),
-  video: storage.bucket(process.env.VIDEOS),
+  profile: process.env.PROFILE_PICTURES ? storage.bucket(process.env.PROFILE_PICTURES) : null,
+  image: process.env.IMAGES ? storage.bucket(process.env.IMAGES) : null,
+  video: process.env.VIDEOS ? storage.bucket(process.env.VIDEOS) : null,
 
   storeProducts: storage.bucket(process.env.STORE_PRODUCTS),
   storeLogos: storage.bucket(process.env.STORE_LOGOS),
@@ -33,17 +53,14 @@ const buckets = {
   proof_of_residence: storage.bucket(process.env.PROOF_OF_RESIDENCE),
 };
 
-// Upload file
+// --- Upload file ---
 async function uploadFileToBucket(file, bucket) {
   if (!bucket || typeof bucket.file !== "function") {
     throw new Error("Invalid bucket provided to uploadFileToBucket()");
   }
 
   const blob = bucket.file(`${Date.now()}-${file.originalname}`);
-  const blobStream = blob.createWriteStream({
-    resumable: false,
-    contentType: file.mimetype,
-  });
+  const blobStream = blob.createWriteStream({ resumable: false, contentType: file.mimetype });
 
   return new Promise((resolve, reject) => {
     blobStream.on("error", reject);
@@ -56,22 +73,17 @@ async function uploadFileToBucket(file, bucket) {
   });
 }
 
-// Delete file
+// --- Delete file ---
 async function deleteFileFromBucket(bucket, fileUrl) {
   try {
     if (!fileUrl) return;
-
     const parts = fileUrl.split("/");
     const fileName = decodeURIComponent(parts.slice(4).join("/"));
     await bucket.file(fileName).delete();
-
     console.log(`Deleted file: ${fileName}`);
   } catch (err) {
-    if (err.code === 404) {
-      console.log("File not found, skipping delete...");
-    } else {
-      console.error("Delete failed:", err);
-    }
+    if (err.code === 404) console.log("File not found, skipping delete...");
+    else console.error("Delete failed:", err);
   }
 }
 
