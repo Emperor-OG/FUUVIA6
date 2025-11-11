@@ -1,45 +1,46 @@
-# ---------- FRONTEND BUILD STAGE ----------
+# ---------- 1️⃣ Frontend Build ----------
 FROM node:20 AS frontend-build
 WORKDIR /app
 
-# Copy dependency files first (for better caching)
+# Copy package files
 COPY package*.json ./
 
-# Install dependencies
+# Install dependencies (includes both frontend & backend deps)
 RUN npm install
 
-# Copy all project files
+# Copy all source files
 COPY . .
 
-# Set production mode for Vite
+# Ensure Vite uses production env
 ENV NODE_ENV=production
+RUN cp .env.production .env || true
 
-# Build React/Vite frontend (outputs to /app/dist)
+# Build React frontend (output to /app/dist)
 RUN npm run build
 
 
-# ---------- BACKEND RUNTIME STAGE ----------
-FROM node:20 AS backend
+# ---------- 2️⃣ Backend (Runtime Image) ----------
+FROM node:20
 WORKDIR /app
 
-# Copy only necessary files for backend
+# Copy only package files for efficient caching
 COPY package*.json ./
+
+# Install only production dependencies
 RUN npm install --omit=dev
 
-# Copy backend source
+# Copy server source
 COPY server ./server
 
-# Copy built frontend from previous stage
+# Copy frontend build from previous stage
 COPY --from=frontend-build /app/dist ./client/dist
 
-# (Optional) Copy any shared configs if needed
-# COPY .env.production .env  # <- Not needed, use Cloud Run env vars instead
-
-# Set environment to production
+# Environment variables
 ENV NODE_ENV=production
+ENV PORT=8080
 
-# Expose the port used by Express
+# Expose Cloud Run port
 EXPOSE 8080
 
-# Start the backend
+# Start Node server
 CMD ["node", "server/server.js"]
