@@ -1,0 +1,59 @@
+/* ===================== */
+/* FOOTER (Mobile)       */
+/* ===================== */
+.footerCon {
+  position: fixed;
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem 0;
+  background-color: var(--sidenav-bg);
+  border-top: 1px solid #ddd;
+  bottom: 0;
+  width: 100%;
+  height: clamp(65px, 9vh, 80px);
+}
+
+.footerButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #444;
+}
+
+.footerButton i {
+  font-size: clamp(24px, 5vw, 28px); /* slightly smaller for better fit */
+  color: var(--sidenav-text);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footerButton:active i,
+.footerButton:hover i {
+  color: skyblue;
+  transform: scale(1.2);
+}
+
+.footerButton:focus {
+  outline: none;
+}
+
+.footerLabel {
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+  color: #444;
+}
+
+.marketBtn {
+  font-size: 2rem; /* icon slightly bigger */
+  color: #007bff;  /* highlight color */
+}
+
+@media (max-width: 768px) {
+  #footerCon {
+    display: flex; /* show footer on mobile */
+  }
+}

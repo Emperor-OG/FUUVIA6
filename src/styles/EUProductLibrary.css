@@ -1,0 +1,118 @@
+.eu-product-library {
+    flex: 1;
+    background-color: #fff;
+    color: #000;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.eu-product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.eu-product-card {
+  background-color: aliceblue;
+  color: #555;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: left;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column; /* ✅ Makes stacking predictable */
+  height: 100%; /* Ensures equal card height in grid */
+}
+
+.eu-product-name {
+    color: #000;
+}
+
+.eu-product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.eu-image-slideshow {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+.eu-slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.eu-slide-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+}
+
+.eu-dot {
+  width: 8px;
+  height: 8px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.eu-dot.active {
+  background: blue;
+}
+
+.eu-product-info {
+  padding: 10px 15px;
+}
+
+.eu-product-name {
+  margin: 8px 0;
+  font-size: 1.1rem;
+}
+
+.no-products {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  padding: 40px;
+}
+
+#Add-to-cart-btn {
+  background: var(--primary-color, #000);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  height: 40px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.2s ease, transform 0.2s ease;
+  margin-top: auto; /* ✅ pushes button to bottom */
+}
+
+#Add-to-cart-btn:hover {
+  background: var(--primary-hover, #0056b3);
+  transform: scale(1.1);
+}
+
+#Add-to-cart-btn i {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 768px) {
+    .eu-product-library {
+        margin-bottom: 80px;
+    }
+}

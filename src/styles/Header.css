@@ -1,0 +1,194 @@
+:root {
+  --header-bg: #ffff;
+  --header-border-top: #fc72ff;
+  --header-border-left: #fc72ff;
+  --header-border-right: blueviolet;
+  --header-border-bottom: #8f68ff;
+  --header-text-color: #111;
+  --header-donation-btn-bg: transparent;
+  --header-donation-btn-color: green;
+  --header-donation-btn-border: green;
+  --header-donation-btn-hover-color: skyblue;
+  --header-donation-btn-hover-border: skyblue;
+  --menu-btn-text-color: white;
+  --menu-btn-border: green;
+  --menu-btn-bg-gradient: linear-gradient(to right, #fc72ff, #8f68ff, #487bff, #8f68ff, #fc72ff);
+  --menu-btn-hover-border: skyblue;
+  --overlay-bg: rgba(0, 0, 0, 0.3);
+  --donations-modal-bg: #fff;
+}
+
+html.dark {
+  --header-bg: #1e1e1e;
+  --header-border-top: #a95cff;
+  --header-border-left: #a95cff;
+  --header-border-right: #6a54ff;
+  --header-border-bottom: #7555ff;
+  --header-text-color: #eee;
+  --header-donation-btn-bg: transparent;
+  --header-donation-btn-color: #66bb66;
+  --header-donation-btn-border: #66bb66;
+  --header-donation-btn-hover-color: #7ecfff;
+  --header-donation-btn-hover-border: #7ecfff;
+  --menu-btn-text-color: #ccc;
+  --menu-btn-border: #66bb66;
+  --menu-btn-bg-gradient: linear-gradient(to right, #a95cff, #7555ff, #487bff, #7555ff, #a95cff);
+  --menu-btn-hover-border: #7ecfff;
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --donations-modal-bg: #111;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 60px;
+  background-color: var(--header-bg);
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  z-index: 999;
+  color: var(--header-text-color);
+  border-bottom: 1px solid #000;
+}
+
+.LogoCon {
+  position: fixed;
+  width: calc(20vw - 2px);
+  height: 58px;
+  left: 0;
+  border-top: 2px solid var(--header-border-top);
+  border-left: 2px solid var(--header-border-left);
+  border-right: 2px solid var(--header-border-right);
+  border-bottom: 2px solid var(--header-border-bottom);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .LogoCon {
+    position: absolute;
+    width: 30%;
+    left: 35%;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.logo {
+  background: var(--menu-btn-bg-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.headerDonationBtn {
+  position: fixed;
+  right: 15px;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 10px;
+  background-color: var(--header-donation-btn-bg);
+  color: var(--header-donation-btn-color);
+  border-radius: 50%;
+  border: 2px solid var(--header-donation-btn-border);
+  transition: 0.2s;
+  font-weight: bold;
+}
+
+.headerDonationBtn:hover {
+  border: 2px solid var(--header-donation-btn-hover-border);
+  color: var(--header-donation-btn-hover-color);
+  cursor: pointer;
+  transform: scale(1.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: 200ms ease-in-out;
+}
+
+/* Modal styles */
+.DonationsModal {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  width: 300px;
+  background-color: var(--donations-modal-bg);
+  color: #000;
+  border: 1px solid #ccc;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  padding: 15px;
+  border-radius: 8px;
+  z-index: 10000;
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Show modal when active */
+.DonationsModal.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Overlay styles */
+.DonationsOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent; /* transparent since we don't want to block the whole screen */
+  z-index: 1000;
+  display: none;
+}
+
+.DonationsOverlay.active {
+  display: block;
+}
+
+/* Optional: Style content */
+.DonationsInfo {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.DonationsMethods {
+  font-weight: bold;
+  font-size: 13px;
+  white-space: pre-line;
+  margin-bottom: 10px;
+}
+
+.DonationsPage {
+  font-size: 12px;
+  color: skyblue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.DonationsPage:hover {
+  color: #0077cc;
+}
+
+.mobile-search {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-search {
+    position: fixed;
+    display: block;
+    width: 80%;
+    left: 15px;
+    padding: 5px 0;
+  }
+}

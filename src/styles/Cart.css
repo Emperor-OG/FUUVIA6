@@ -1,0 +1,186 @@
+/* Overlay */
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  transition: opacity 0.3s ease;
+}
+
+/* Drawer */
+.cart-drawer {
+  width: 350px;
+  max-width: 90%;
+  height: 100%;
+  background: #fff;
+  color: #000;
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+  overflow-y: auto;
+}
+
+/* Header */
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #000;
+}
+
+.cart-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.cart-close {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  transition: color 0.2s ease;
+}
+
+.cart-close:hover {
+  color: #ff4d4d;
+}
+
+/* Items */
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #000;
+  gap: 5px;
+}
+
+.cart-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.cart-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+}
+
+.cart-item-info p {
+  margin: 0 0 10px 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* Quantity Controls */
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.qty-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #ccc;
+  background: #656565;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qty-btn:hover {
+  background: #e0e0e0;
+}
+
+.qty-text {
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Trash Button */
+.trash-btn {
+  font-size: 1.2rem;
+  color: #000;
+  cursor: pointer;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+
+.trash-btn:hover {
+  color: #ff0000;
+}
+
+/* Empty cart text */
+.empty-cart-text {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+}
+
+/* Footer */
+.cart-footer {
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 30px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  z-index: 10;
+}
+
+.cart-footer h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+/* Checkout Button Styling */
+.checkout-btn {
+  background-color: #2d87f0;       /* Blue background */
+  color: #fff;                     /* White text */
+  border: none;                    /* Remove default border */
+  padding: 12px 20px;              /* Space inside button */
+  border-radius: 6px;              /* Rounded corners */
+  font-size: 16px;                 /* Text size */
+  font-weight: bold;
+  cursor: pointer;                 /* Pointer on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;                     /* Full width of footer */
+  text-align: center;
+}
+
+/* Hover effect */
+.checkout-btn:hover {
+  background-color: #1c5dc9;
+  transform: translateY(-2px);     /* Slight lift on hover */
+}
+
+/* Optional: active/click effect */
+.checkout-btn:active {
+  background-color: #174a9e;
+  transform: translateY(0);
+}

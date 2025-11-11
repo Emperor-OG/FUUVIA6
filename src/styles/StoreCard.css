@@ -1,0 +1,129 @@
+/* Store card */
+.store-card {
+  max-width: 200px;
+  height: 250px; /* fixed height matching add-store */
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative; /* positioning context for logo */
+  margin: 5px;
+}
+
+.store-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* Banner */
+.store-banner {
+  width: 100%;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-bottom: 1px solid silver;
+}
+
+/* Logo */
+.store-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid skyblue;
+  position: absolute;
+  top: 60%;
+  bottom: 12px;
+  left: 10px;
+  background: #fff;
+  object-fit: cover;
+}
+
+.store-name {
+  position: absolute;
+  color: #000;
+  top: 87%;
+  left: 10px;
+}
+
+.store-location {
+  position: absolute;
+  color: #000;
+  top: 92%;
+  left: 10px;
+}
+
+.store-number {
+  position: absolute;
+  top: 75%;
+  right: 10px;
+  font-size: 0.9rem;
+  background-color: #000;
+  color: #fff;
+  border-radius: 50%;      /* makes it circular */
+  width: 30px;             /* circle width */
+  height: 30px;            /* circle height */
+  display: flex;           /* for centering text */
+  align-items: center;     /* vertical center */
+  justify-content: center; /* horizontal center */
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Store info */
+.store-info {
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px 12px;
+  padding-left: 80px; /* space for logo */
+  box-sizing: border-box;
+}
+
+.store-info h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.store-info p {
+  font-size: 13px;
+  margin: 2px 0 0 0;
+  line-height: 1.2;
+}
+
+/* Favourite Heart Button */
+.favourite-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.favourite-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 1);
+}
+
+.favourite-btn i {
+  color: #888;
+}
+
+.favourite-btn.favourited i {
+  color: #e0245e; /* red for favourited */
+}
