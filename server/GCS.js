@@ -1,30 +1,11 @@
 const { Storage } = require("@google-cloud/storage");
 
-// --- Safety checks for required env vars ---
-const required = [
-  "GCP_PROJECT_ID",
-  "GCP_PRIVATE_KEY",
-  "GCP_CLIENT_EMAIL",
-  "STORE_PRODUCTS",
-  "STORE_LOGOS",
-  "STORE_BANNERS",
-  "STORE_DOCUMENTS",
-  "STORE_POA",
-  "PROOF_OF_RESIDENCE",
-];
-for (const key of required) {
-  if (!process.env[key]) {
-    console.error(`❌ Missing required environment variable: ${key}`);
-    process.exit(1); // fail fast
-  }
-}
-
 // --- Build credentials object ---
 const credentials = {
   type: "service_account",
   project_id: process.env.GCP_PROJECT_ID,
   private_key_id: process.env.GCP_PRIVATE_KEY_ID,
-  private_key: process.env.GCP_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  private_key: process.env.GCP_PRIVATE_KEY ? process.env.GCP_PRIVATE_KEY.replace(/\\n/g, "\n") : undefined,
   client_email: process.env.GCP_CLIENT_EMAIL,
   client_id: process.env.GCP_CLIENT_ID,
   auth_uri: process.env.GCP_AUTH_URI,
@@ -39,18 +20,28 @@ const storage = new Storage({
   projectId: process.env.GCP_PROJECT_ID,
 });
 
-// --- Buckets ---
-const buckets = {
-  profile: process.env.PROFILE_PICTURES ? storage.bucket(process.env.PROFILE_PICTURES) : null,
-  image: process.env.IMAGES ? storage.bucket(process.env.IMAGES) : null,
-  video: process.env.VIDEOS ? storage.bucket(process.env.VIDEOS) : null,
+// --- Safe bucket getter ---
+function getBucket(envVar) {
+  const bucketName = process.env[envVar];
+  if (!bucketName) {
+    console.warn(`⚠️ Bucket env var ${envVar} not set. Bucket will be null.`);
+    return null;
+  }
+  return storage.bucket(bucketName);
+}
 
-  storeProducts: storage.bucket(process.env.STORE_PRODUCTS),
-  storeLogos: storage.bucket(process.env.STORE_LOGOS),
-  storeBanners: storage.bucket(process.env.STORE_BANNERS),
-  storeDocuments: storage.bucket(process.env.STORE_DOCUMENTS),
-  storePOA: storage.bucket(process.env.STORE_POA),
-  proof_of_residence: storage.bucket(process.env.PROOF_OF_RESIDENCE),
+// --- Buckets object (lazy-loaded) ---
+const buckets = {
+  profile: getBucket("PROFILE_PICTURES"),
+  image: getBucket("IMAGES"),
+  video: getBucket("VIDEOS"),
+
+  storeProducts: getBucket("STORE_PRODUCTS"),
+  storeLogos: getBucket("STORE_LOGOS"),
+  storeBanners: getBucket("STORE_BANNERS"),
+  storeDocuments: getBucket("STORE_DOCUMENTS"),
+  storePOA: getBucket("STORE_POA"),
+  proof_of_residence: getBucket("PROOF_OF_RESIDENCE"),
 };
 
 // --- Upload file ---
@@ -76,7 +67,7 @@ async function uploadFileToBucket(file, bucket) {
 // --- Delete file ---
 async function deleteFileFromBucket(bucket, fileUrl) {
   try {
-    if (!fileUrl) return;
+    if (!bucket || !fileUrl) return;
     const parts = fileUrl.split("/");
     const fileName = decodeURIComponent(parts.slice(4).join("/"));
     await bucket.file(fileName).delete();
