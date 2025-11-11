@@ -32,10 +32,6 @@ function getBucket(envVar) {
 
 // --- Buckets object (lazy-loaded) ---
 const buckets = {
-  profile: getBucket("PROFILE_PICTURES"),
-  image: getBucket("IMAGES"),
-  video: getBucket("VIDEOS"),
-
   storeProducts: getBucket("STORE_PRODUCTS"),
   storeLogos: getBucket("STORE_LOGOS"),
   storeBanners: getBucket("STORE_BANNERS"),
@@ -79,3 +75,4 @@ async function deleteFileFromBucket(bucket, fileUrl) {
 }
 
 module.exports = { buckets, uploadFileToBucket, deleteFileFromBucket };
+
