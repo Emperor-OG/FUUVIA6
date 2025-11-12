@@ -78,6 +78,7 @@ const marketRoutes = require("./routes/market");
 const storeInfoRoutes = require("./routes/storeinfo");
 const productRoutes = require("./routes/products");
 const locationsRoutes = require("./routes/locations");
+const paymentRoutes = require("./routes/payment");
 
 app.use("/api/user", userRoutes);
 app.use("/api/stores", marketRoutes);
@@ -161,5 +162,6 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on port ${PORT} (${isProd ? "Production" : "Dev"})`);
   console.log(`🌍 CORS Origin: ${ORIGIN}`);
 });
+
 
 
