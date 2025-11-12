@@ -42,4 +42,3 @@ export default function StoreCard({ store, onClick, isFavourite = false, onHeart
     </div>
   );
 }
-
