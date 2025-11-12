@@ -21,11 +21,9 @@ else dotenv.config();
 // -----------------------------------
 const app = express();
 const isProd = process.env.NODE_ENV === "production";
-const ORIGIN = isProd
-  ? process.env.ORIGIN
-  : "http://localhost:5173";
+const ORIGIN = isProd ? process.env.ORIGIN : "http://localhost:5173";
 
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); // Important for Cloud Run
 
 // -----------------------------------
 // Middleware
@@ -50,7 +48,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: isProd,
+      secure: isProd, // Only secure in production
       sameSite: isProd ? "none" : "lax",
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     },
@@ -60,12 +58,12 @@ app.use(
 // -----------------------------------
 // Passport Setup
 // -----------------------------------
-require("./auth"); // initializes Google strategy
+require("./auth"); // Google strategy
 app.use(passport.initialize());
 app.use(passport.session());
 
 // -----------------------------------
-// Verify Auth Middleware
+// Auth Middleware
 // -----------------------------------
 function verifyUser(req, res, next) {
   if (!req.user) return res.status(401).json({ error: "Not authenticated" });
@@ -73,7 +71,7 @@ function verifyUser(req, res, next) {
 }
 
 // -----------------------------------
-// Routes
+// API Routes
 // -----------------------------------
 const userRoutes = require("./routes/user");
 const marketRoutes = require("./routes/market");
@@ -119,16 +117,20 @@ app.get("/auth/user", (req, res) => {
 // -----------------------------------
 // Health Check
 // -----------------------------------
-app.get("/api/health", (req, res) => res.json({ status: "OK", message: "Server running" }));
+app.get("/api/health", (req, res) => {
+  res.json({ status: "OK", message: "Server running" });
+});
 
 // -----------------------------------
-// Serve frontend (only in production)
+// Serve Frontend (in Production)
 // -----------------------------------
 if (isProd) {
   const clientPath = path.join(__dirname, "../client/dist");
   if (fs.existsSync(clientPath)) {
     app.use(express.static(clientPath));
-    app.get("/*", (req, res, next) => {
+
+    // ✅ Correct catch-all route
+    app.get("*", (req, res, next) => {
       if (req.url.startsWith("/api") || req.url.startsWith("/auth")) return next();
       res.sendFile(path.join(clientPath, "index.html"));
     });
@@ -136,14 +138,13 @@ if (isProd) {
 }
 
 // -----------------------------------
-// Error Handlers
+// Error Handling
 // -----------------------------------
 app.use((req, res) => res.status(404).json({ error: "Not found" }));
 
 app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);
-  if (!res.headersSent)
-    res.status(500).json({ error: "Internal server error" });
+  if (!res.headersSent) res.status(500).json({ error: "Internal server error" });
 });
 
 // -----------------------------------
