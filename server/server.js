@@ -75,9 +75,16 @@ function verifyUser(req, res, next) {
 // -----------------------------------
 const userRoutes = require("./routes/user");
 const marketRoutes = require("./routes/market");
+const storeInfoRoutes = require("./routes/storeinfo");
+const productRoutes = require("./routes/products");
+const locationsRoutes = require("./routes/locations");
 
 app.use("/api/user", userRoutes);
 app.use("/api/stores", marketRoutes);
+app.use("/api/stores", storeInfoRoutes);
+app.use("/api/stores", productRoutes);
+app.use("/api", locationsRoutes);
+app.use("/api/payments", paymentRoutes);
 
 // -----------------------------------
 // Auth Routes (Google)
@@ -154,4 +161,5 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on port ${PORT} (${isProd ? "Production" : "Dev"})`);
   console.log(`🌍 CORS Origin: ${ORIGIN}`);
 });
+
 
