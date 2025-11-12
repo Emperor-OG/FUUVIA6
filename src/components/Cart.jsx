@@ -1,5 +1,6 @@
 // components/Cart.jsx
 import React from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "../styles/Cart.css";
 
 export default function Cart({
@@ -8,10 +9,17 @@ export default function Cart({
   onCloseCart,
   onRemoveItem,
   onUpdateQuantity,
+  storeId: propStoreId, // optional prop
 }) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Use storeId from prop first, fallback to URL query
+  const storeId = propStoreId || searchParams.get("id");
+
   if (!showCart) return null;
 
-  // Normalize cart items: ensure numbers and proper ids
+  // Normalize cart items
   const normalizedItems = cartItems.map((item) => ({
     variant_id: item.variant_id ?? item.id,
     name: item.name,
@@ -21,22 +29,27 @@ export default function Cart({
     image: item.image ?? "",
   }));
 
-  // Total price
   const total = normalizedItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
+  const handleCheckout = () => {
+    if (!storeId) return alert("Store ID missing!");
+    onCloseCart();
+    navigate(`/checkout?id=${storeId}`, {
+      state: { cartItems: normalizedItems },
+    });
+  };
+
   return (
     <div className="cart-overlay" onClick={onCloseCart}>
       <div className="cart-drawer" onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
         <div className="cart-header">
           <h2>Your Cart</h2>
           <i className="bx bx-x cart-close" onClick={onCloseCart}></i>
         </div>
 
-        {/* Items */}
         <div className="cart-items">
           {normalizedItems.length === 0 ? (
             <p className="empty-cart-text">Your cart is empty</p>
@@ -79,11 +92,12 @@ export default function Cart({
           )}
         </div>
 
-        {/* Footer */}
         {normalizedItems.length > 0 && (
           <div className="cart-footer">
             <h3>Total: R{total.toFixed(2)}</h3>
-            <button className="checkout-btn">Checkout</button>
+            <button className="checkout-btn" onClick={handleCheckout}>
+              Checkout
+            </button>
           </div>
         )}
       </div>
