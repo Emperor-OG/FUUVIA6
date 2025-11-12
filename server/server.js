@@ -130,9 +130,8 @@ if (isProd) {
     app.use(express.static(clientPath));
 
     // ✅ Correct catch-all route
-    app.get("*", (req, res, next) => {
-      if (req.url.startsWith("/api") || req.url.startsWith("/auth")) return next();
-      res.sendFile(path.join(clientPath, "index.html"));
+    app.use((req, res) => {
+      res.sendFile(path.join(__dirname, "../client/dist/index.html"));
     });
   }
 }
@@ -155,3 +154,4 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Server running on port ${PORT} (${isProd ? "Production" : "Dev"})`);
   console.log(`🌍 CORS Origin: ${ORIGIN}`);
 });
+
